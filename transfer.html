@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transfer Funds</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+    }
+    .header {
+      background-color: #2196F3;
+      color: white;
+      padding: 30px 20px 10px;
+      text-align: left;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+    .header h1 { margin: 0; font-size: 18px; }
+    .amount-input {
+      margin-top: 10px;
+      width: 100%;
+      font-size: 36px;
+      font-weight: bold;
+      border: none;
+      background: transparent;
+      color: white;
+      outline: none;
+    }
+    .form-container {
+      background: white;
+      margin-top: -20px;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      padding: 20px;
+    }
+    .input-group { margin-bottom: 15px; }
+    .input-group select,
+    .input-group input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+    .continue-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      background-color: #7f3dff;
+      color: white;
+      font-size: 18px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+    .attachment {
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      color: #888;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    .attachment i { margin-right: 8px; color: #888; }
+    .attachment-modal {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      background: white;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      transition: bottom 0.3s ease-in-out;
+    }
+    .attachment-modal.show { bottom: 0; }
+    .attachment-options {
+      display: flex;
+      justify-content: space-around;
+    }
+    .attachment-options div {
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .attachment-options i {
+      font-size: 24px;
+      margin-bottom: 5px;
+      color: #7f3dff;
+    }
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: #ccc;
+      border-radius: 2px;
+      margin: 0 auto 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Transfer</h1>
+    <input type="text" class="amount-input" value="$0" />
+  </div>
+
+  <div class="form-container">
+    <div class="input-group">
+      <select>
+        <option selected disabled>From Account</option>
+        <option>Bank</option>
+        <option>Cash</option>
+        <option>PayPal</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <select>
+        <option selected disabled>To Account</option>
+        <option>Bank</option>
+        <option>Cash</option>
+        <option>PayPal</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <input type="text" placeholder="Description" />
+    </div>
+
+    <div class="attachment" onclick="openAttachmentOptions()">
+      <i class="fas fa-paperclip"></i> Add attachment
+    </div>
+
+    <div class="attachment-modal" id="attachmentModal">
+      <div class="modal-handle"></div>
+      <div class="attachment-options">
+        <div><i class="fas fa-camera"></i><br>Camera</div>
+        <div><i class="fas fa-image"></i><br>Image</div>
+        <div><i class="fas fa-file-alt"></i><br>Document</div>
+      </div>
+    </div>
+
+    <button class="continue-btn" onclick="goToFinance()">Continue</button>
+  </div>
+
+  <script>
+    function openAttachmentOptions() {
+      document.getElementById("attachmentModal").classList.add("show");
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("attachmentModal");
+      if (!event.target.closest('.attachment') && !event.target.closest('.attachment-modal')) {
+        modal.classList.remove("show");
+      }
+    }
+
+    function goToFinance() {
+      // Redirect to finance.html after transfer
+      window.location.href = 'transtation.html';
+    }
+  </script>
+</body>
+</html>

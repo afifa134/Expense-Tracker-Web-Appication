@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; padding:0; background:#fff; color:#333; }
+    .container { padding:20px; }
+    header { display:flex; justify-content:space-between; align-items:center; }
+    .total-amount { font-size:32px; margin:20px 0; font-weight:bold; }
+    .chart-placeholder { background:#f2f2f2; border-radius:10px; margin-bottom:20px; padding:20px; }
+    canvas { width:100% !important; height:300px !important; }
+    .top-controls { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
+    .month-select select { padding:6px 16px; border:2px solid #eee; border-radius:20px; font-size:14px; background:white; font-weight:500; color:black; appearance:none; }
+    .chart-toggle { display:flex; border-radius:12px; overflow:hidden; border:1px solid #ddd; }
+    .chart-toggle button { padding:8px 12px; border:none; background:white; color:#7a5cff; font-size:16px; cursor:pointer; }
+    .chart-toggle button.active { background-color:#7a5cff; color:white; }
+    .tabs { background-color:#f4f3ff; border-radius:50px; display:flex; padding:4px; margin-top:20px; width:250px; }
+    .tabs button { flex:1; padding:10px 0; border:none; border-radius:50px; background:transparent; font-size:16px; font-weight:500; color:#000; cursor:pointer; transition:0.3s; }
+    .tabs button.active { background-color:#7a5cff; color:#fff; }
+    .transaction-list { margin-top:20px; }
+    .transaction-item { background:#f9f9f9; padding:12px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+    .transaction-item.expense { border-left:4px solid red; }
+    .transaction-item.income { border-left:4px solid green; }
+    .transaction-info { flex-grow:1; }
+    .transaction-amount { font-weight:bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header><h2>Financial Report</h2></header>
+
+    <div class="top-controls">
+      <div class="month-select">
+        <select id="reportMonth">
+          <option>Month</option><option>Day</option><option>Week</option><option>Year</option>
+        </select>
+      </div>
+      <div class="chart-toggle">
+        <button id="lineBtn" class="active" onclick="activateChart('line')"><i class="fas fa-chart-line"></i></button>
+        <button id="pieBtn" onclick="activateChart('pie')"><i class="fas fa-chart-pie"></i></button>
+      </div>
+    </div>
+
+    <div class="total-amount">₹<span id="totalAmount">0</span></div>
+
+    <div class="chart-placeholder">
+      <canvas id="incomeExpenseChart"></canvas>
+    </div>
+
+    <div class="tabs">
+      <button id="expenseTab" class="active">Expense</button>
+      <button id="incomeTab">Income</button>
+    </div>
+
+    <div class="transaction-list" id="transactionList"></div>
+  </div>
+
+  <script>
+    // Set default data if missing
+    if (!localStorage.getItem('income')) {
+      localStorage.setItem('income', JSON.stringify([{ title:'Salary', desc:'Monthly Salary', amount:5000, time:'2025-06-01' }]));
+    }
+    if (!localStorage.getItem('expense')) {
+      localStorage.setItem('expense', JSON.stringify([{ title:'Groceries', desc:'Supermarket', amount:1500, time:'2025-06-02' }]));
+    }
+
+    // DOM references
+    const expenseTab = document.getElementById('expenseTab');
+    const incomeTab = document.getElementById('incomeTab');
+    const transactionList = document.getElementById('transactionList');
+    const totalAmount = document.getElementById('totalAmount');
+    let currentChartType = 'line';
+    let chart;
+
+    // Tab switch behavior
+    expenseTab.addEventListener('click', () => { expenseTab.classList.add('active'); incomeTab.classList.remove('active'); renderTransactions('expense'); });
+    incomeTab.addEventListener('click', () => { incomeTab.classList.add('active'); expenseTab.classList.remove('active'); renderTransactions('income'); });
+
+    document.getElementById('reportMonth').addEventListener('change', updateChart);
+
+    // Chart toggle
+    function activateChart(type) {
+      document.getElementById('lineBtn').classList.toggle('active', type === 'line');
+      document.getElementById('pieBtn').classList.toggle('active', type === 'pie');
+      currentChartType = type;
+      updateChart();
+    }
+
+    // Render list items
+    function renderTransactions(type) {
+      const data = JSON.parse(localStorage.getItem(type)) || [];
+      transactionList.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `transaction-item ${type}`;
+        div.innerHTML = `
+          <div class="transaction-info"><strong>${item.title}</strong><br/><small>${item.desc}</small><br/><small>${item.time}</small></div>
+          <div class="transaction-amount">${type === 'expense' ? '-' : '+'}₹${item.amount}</div>`;
+        transactionList.appendChild(div);
+      });
+    }
+
+    // Chart builder
+    function updateChart() {
+      const incomes = JSON.parse(localStorage.getItem('income')) || [];
+      const expenses = JSON.parse(localStorage.getItem('expense')) || [];
+      const totalInc = incomes.reduce((a,c) => a + +c.amount, 0);
+      const totalExp = expenses.reduce((a,c) => a + +c.amount, 0);
+      totalAmount.textContent = currentChartType === 'pie' ? totalInc + totalExp : totalExp;
+
+      const cfg = {
+        type: currentChartType,
+        data: {
+          labels:['Income','Expense'],
+          datasets: [{ data: [totalInc, totalExp], backgroundColor:['#1b8040','#e03838'] }]
+        },
+        options: { responsive:true, plugins:{ legend:{ display:true } } }
+      };
+      chart?.destroy();
+      chart = new Chart(document.getElementById('incomeExpenseChart').getContext('2d'), cfg);
+    }
+
+    // Initial load
+    window.onload = () => {
+      renderTransactions('expense');
+      updateChart();
+    };
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Wallet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #9333ea;
+      color: white;
+      padding: 30px 20px;
+    }
+
+    .back {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    .balance {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .balance input {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      width: 100%;
+      outline: none;
+      padding-left: 5px;
+    }
+
+    .form {
+      background-color: white;
+      border-radius: 20px;
+      padding: 20px;
+      color: black;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .banks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .bank {
+      padding: 10px 15px;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: background 0.2s ease;
+    }
+
+    .bank.selected {
+      background-color: #9333ea;
+      color: white;
+    }
+
+    .continue {
+      width: 100%;
+      padding: 15px;
+      background-color: #9333ea;
+      color: white;
+      font-size: 1rem;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .continue:hover {
+      background-color: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+  <div class="back" onclick="history.back()">←</div>
+  <h2>Add new wallet</h2>
+
+  <!-- Editable balance section -->
+  <div class="balance">
+    <span>₹</span><input type="number" id="walletBalance" placeholder="0.0" />
+  </div>
+
+  <div class="form">
+    <input type="text" id="walletName" placeholder="Wallet Name (e.g. Chase)" />
+    <select id="walletType">
+      <option disabled selected>Select Type</option>
+      <option>Bank</option>
+      <option>Wallet</option>
+    </select>
+
+    <p style="margin: 20px 0;">Select a Bank Icon</p>
+    <div class="banks" id="bankIcons">
+      <div class="bank"><i class="fab fa-alipay"></i></div>
+      <div class="bank"><i class="fab fa-amazon-pay"></i></div>
+      <div class="bank"><i class="fab fa-apple-pay"></i></div>
+      <div class="bank"><i class="fab fa-cc-visa"></i></div>
+      <div class="bank"><i class="fab fa-cc-mastercard"></i></div>
+      <div class="bank"><i class="fab fa-cc-paypal"></i></div>
+      <div class="bank"><i class="fab fa-cc-amex"></i></div>
+      <div class="bank"><i class="fas fa-credit-card"></i></div>
+      <div class="bank">+ See Other</div>
+    </div>
+
+    <button class="continue" onclick="submitWallet()">Continue</button>
+  </div>
+
+  <script>
+    let selectedIconClass = "";
+
+    // Handle bank icon selection
+    document.getElementById("bankIcons").addEventListener("click", function (e) {
+      const allBanks = document.querySelectorAll(".bank");
+      allBanks.forEach(bank => bank.classList.remove("selected"));
+
+      const target = e.target.closest(".bank");
+      if (target && target.querySelector("i")) {
+        target.classList.add("selected");
+        selectedIconClass = target.querySelector("i").className;
+      }
+    });
+
+    function submitWallet() {
+      const name = document.getElementById("walletName").value.trim();
+      const type = document.getElementById("walletType").value;
+      const balance = parseFloat(document.getElementById("walletBalance").value) || 0;
+
+      if (!name || type === "Select Type" || !selectedIconClass) {
+        alert("Please complete all fields and select a bank icon.");
+        return;
+      }
+
+      console.log("Wallet Name:", name);
+      console.log("Type:", type);
+      console.log("Balance: $" + balance.toFixed(2));
+      console.log("Selected Icon:", selectedIconClass);
+
+      // Save logic here (e.g. Firebase or localStorage)
+
+      alert("Wallet created successfully!");
+      window.location.href = "Signup-success.html";
+    }
+  </script>
+</body>
+</html>
+

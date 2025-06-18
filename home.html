@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Budget Buddy - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding-bottom: 200px; }
+    header { padding: 20px; text-align: center; background: #8b5cf6; color: white; font-size: 1.6rem; font-weight: bold; }
+    .section { padding: 20px; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #9333ea; }
+    .month-dropdown { padding: 8px 16px; border: none; border-radius: 20px; background-color: #f3f1f8; font-size: 1rem; }
+    .notification-wrapper { position: relative; display: inline-block; }
+    .bell-icon { font-size: 1.4rem; color: #9333ea; cursor: pointer; }
+    .notification-wrapper .dot { position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; background: red; border-radius: 50%; border: 2px solid white; }
+    .welcome { font-size: 1.2rem; color: #444; margin-bottom: 15px; }
+    .balance-box { background: #f3f1f8; color: #262a2a; border-radius: 15px; padding: 20px; text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
+    .summary { display: flex; gap: 10px; margin-bottom: 20px; }
+    .summary-box { flex: 1; padding: 15px; border-radius: 12px; text-align: center; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-decoration: none; transition: transform 0.2s; }
+    .summary-box:hover { transform: scale(1.03); }
+    .income-box { background: #1b8040; }
+    .expense-box { background: #e03838; }
+    .graph { background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .tabs { display: flex; justify-content: space-around; margin-top: 10px; }
+    .tabs button { background: #eee; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; }
+    .tabs button.active { background: #8b5cf6; color: white; }
+    canvas { width: 100% !important; height: 200px; }
+    .transactions { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+    .transactions h3 { font-size: 1.2rem; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .transaction-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .transaction-item:last-child { border-bottom: none; }
+    .see-all-btn { font-size: 0.9rem; color: #8b5cf6; background: #f3f1f8; padding: 5px 10px; border-radius: 8px; text-decoration: none; }
+    .see-all-btn:hover { background: #8b5cf6; color: white; }
+    nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #ddd; z-index: 100; }
+    .nav-icon { font-size: 1.4rem; color: #777; text-decoration: none; }
+    .nav-icon.active { color: #8b5cf6; }
+    .fab-main { position: relative; width: 50px; height: 50px; background: #8b5cf6; color: white; border: none; border-radius: 50%; font-size: 1.6rem; margin-top: -25px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); z-index: 101; }
+    #fab-actions { position: fixed; bottom: 90px; width: 100%; text-align: center; display: none; z-index: 100; }
+    .fab-action { width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1rem; margin: 0 8px; display: inline-block; }
+    .fab-action.red { background: #f87171; }
+    .fab-action.green { background: #4ade80; }
+    .fab-action.blue { background: #60a5fa; }
+
+    /* AI Assistant Styles */
+    #ai-btn { position: fixed; bottom: 150px; right: 20px; background: #7a5cff; color: white; width: 60px; height: 60px; border-radius: 50%; font-size: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); cursor: pointer; z-index: 200; }
+    #ai-modal { display: none; position: fixed; bottom: 220px; right: 20px; width: 320px; max-height: 400px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); flex-direction: column; z-index: 200; }
+    #ai-header { background: #7a5cff; color: white; padding: 10px; text-align: center; font-weight: bold; border-top-left-radius: 10px; border-top-right-radius: 10px; }
+    #ai-chat { padding: 10px; background: #f9f9f9; height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+    .ai-message { max-width: 85%; padding: 8px; border-radius: 8px; }
+    .user { align-self: flex-end; background: #d0d0ff; }
+    .assistant { align-self: flex-start; background: #fff; border: 1px solid #ddd; }
+    #ai-ui { display: flex; align-items: center; padding: 10px; border-top: 1px solid #ddd; }
+    #ai-input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+    #ai-send { padding: 8px 12px; margin-left: 10px; background: #7a5cff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <header>Budget Buddy</header>
+  <div class="section">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <a href="profile.html"><img src="" alt="User" class="avatar" /></a>
+      <select class="month-dropdown">
+        <option value="all">All Months</option>
+        <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option> 
+        <option value="may">May</option>
+        <option value="june">June</option>  
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option selected>October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
+      </select>
+      <a href="notification.html" class="notification-wrapper">
+        <i class="fas fa-bell bell-icon"></i>
+        <span class="dot"></span>
+      </a>
+    </div>
+
+    <!-- Welcome & Balance -->
+    <div class="welcome">Hello, User 👋</div>
+    <div class="balance-box" id="accountBalance"><i class="fas fa-wallet"></i> ₹25,000</div>
+
+    <!-- Summary Boxes -->
+    <div class="summary">
+      <a href="income.html" class="summary-box income-box">
+        <strong><i class="fas fa-arrow-circle-up"></i> Income</strong>
+        <p id="incomeValue">₹0</p>
+      </a>
+      <a href="expense.html" class="summary-box expense-box">
+        <strong><i class="fas fa-arrow-circle-down"></i> Expenses</strong>
+        <p id="expenseValue">₹0</p>
+      </a>
+    </div>
+
+    <!-- Graph Section -->
+    <h2>Spend Frequency</h2>
+    <div class="graph">
+      <canvas id="spendChart"></canvas>
+      <div class="tabs">
+        <button class="active" onclick="selectTab(this)">Today</button>
+        <button onclick="selectTab(this)">Week</button>
+        <button onclick="selectTab(this)">Month</button>
+        <button onclick="selectTab(this)">Year</button>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="transactions">
+      <h3>
+        Recent Transactions
+        <a href="transtation.html" class="see-all-btn">See All</a>
+      </h3>
+      <div class="transaction-item"><span>Grocery</span><span>- ₹500</span></div>
+      <div class="transaction-item"><span>Salary</span><span>+ ₹12,000</span></div>
+      <div class="transaction-item"><span>Internet Bill</span><span>- ₹800</span></div>
+    </div>
+
+  </div>
+
+  <!-- FAB Actions -->
+  <div id="fab-actions">
+    <a href="transfer.html" class="fab-action blue"><i class="fas fa-random"></i></a>
+    <a href="income.html" class="fab-action green"><i class="fas fa-arrow-down"></i></a>
+    <a href="expenses.html" class="fab-action red"><i class="fas fa-arrow-up"></i></a>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="#" class="nav-icon active"><i class="fas fa-home"></i></a>
+    <a href="transtation.html" class="nav-icon"><i class="fas fa-random"></i></a>
+    <button id="fab-toggle" class="fab-main"><i class="fas fa-plus"></i></button>
+    <a href="budget.html" class="nav-icon"><i class="fas fa-chart-pie"></i></a>
+    <a href="profile.html" class="nav-icon"><i class="fas fa-user"></i></a>
+  </nav>
+
+  <!-- AI Assistant -->
+  <div id="ai-btn"><i class="fas fa-robot"></i></div>
+  <div id="ai-modal">
+    <div id="ai-header">Assistant Bot</div>
+    <div id="ai-chat">
+      <div class="ai-message assistant">Hi! Ask me how to cut expenses or save better.</div>
+    </div>
+    <div id="ai-ui">
+      <input id="ai-input" placeholder="e.g., How can I save on groceries?" />
+      <button id="ai-send">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Chart setup
+    const ctx = document.getElementById('spendChart').getContext('2d');
+    const spendChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: ['Income','Expense'], datasets: [{ data: [0,0], backgroundColor: ['#1b8040','#e03838'] }] },
+      options: { responsive:true, scales:{ y:{ beginAtZero:true } }, plugins:{ legend:{ display:false }} }
+    });
+
+    function updateSummary(income, expense) {
+      document.getElementById('incomeValue').innerText = `₹${income.toLocaleString()}`;
+      document.getElementById('expenseValue').innerText = `₹${expense.toLocaleString()}`;
+    }
+
+    function selectTab(btn) {
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      let inc=0, exp=0;
+      switch(btn.innerText) {
+        case 'Today': inc=1200; exp=500; break;
+        case 'Week': inc=7500; exp=3000; break;
+        case 'Month': inc=22000; exp=15000; break;
+        case 'Year': inc=145000; exp=90000; break;
+      }
+      spendChart.data.datasets[0].data = [inc,exp];
+      spendChart.update();
+      updateSummary(inc,exp);
+    }
+
+    selectTab(document.querySelector('.tabs button.active'));
+
+    // Notification dot
+    if(!true) document.querySelector('.dot').style.display = 'none';
+
+    // FAB logic
+    const fabBtn = document.getElementById('fab-toggle');
+    const fabActions = document.getElementById('fab-actions');
+    fabBtn.addEventListener('click', () => {
+      fabActions.style.display = (fabActions.style.display === 'block' ? 'none' : 'block');
+      fabBtn.innerHTML = fabActions.style.display === 'block' ? '<i class="fas fa-times"></i>' : '<i class="fas fa-plus"></i>';
+    });
+
+    // AI Assistant logic
+    const aiBtn = document.getElementById('ai-btn'),
+          aiModal = document.getElementById('ai-modal'),
+          aiChat = document.getElementById('ai-chat'),
+          aiInput = document.getElementById('ai-input'),
+          aiSend = document.getElementById('ai-send');
+
+    aiBtn.onclick = () => aiModal.style.display = aiModal.style.display === 'block' ? 'none' : 'block';
+    aiSend.onclick = () => {
+      const msg = aiInput.value.trim();
+      if (!msg) return;
+      const userDiv = document.createElement('div');
+      userDiv.className = 'ai-message user';
+      userDiv.textContent = msg;
+      aiChat.appendChild(userDiv);
+      aiInput.value = '';
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'ai-message assistant';
+        const l = msg.toLowerCase();
+        botDiv.textContent = l.includes('save') ? 'Try saving 10–20% from your groceries' :
+                            l.includes('expense') ? 'Consider trimming entertainment costs.' :
+                            'Tell me more about your spending!';
+        aiChat.appendChild(botDiv);
+        aiChat.scrollTop = aiChat.scrollHeight;
+      }, 300);
+    };
+  </script>
+</body>
+</html>

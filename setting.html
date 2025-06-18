@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f9f9f9;
+    }
+
+    .settings-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0001;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .setting-item {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    select,
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .toggle {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      display: inline-block;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      background-color: #ccc;
+      border-radius: 24px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #7f3dff;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .toggle-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .toggle-label span {
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div class="settings-container">
+    <h2>Settings</h2>
+
+    <div class="setting-item">
+      <label for="currency">Currency</label>
+      <select id="currency">
+        <option>USD ($)</option>
+        <option>EUR (€)</option>
+        <option>INR (₹)</option>
+        <option>GBP (£)</option>
+        <option>JPY (¥)</option>
+        <option>AUD (A$)</option>
+        <option>CAD (C$)</option>
+        <!-- Add more as needed -->
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label for="theme">Theme</label>
+      <select id="theme">
+        <option>Light</option>
+        <option>Dark</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label for="language">Language</label>
+      <select id="language">
+        <option>English</option>
+        <option>Hindi</option>
+        <option>Spanish</option>
+        <option>French</option>
+        <option>German</option>
+        <option>Chinese</option>
+        <option>Arabic</option>
+        <!-- Add more languages -->
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label>Security</label>
+      <select>
+        <option>PIN</option>
+        <option>Fingerprint</option>
+        <option>Face ID</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label>Notifications</label>
+      <div class="toggle-label">
+        <span>Expenses Alert</span>
+        <label class="toggle">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-label">
+        <span>Budget</span>
+        <label class="toggle">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-label">
+        <span>Tips & Articles</span>
+        <label class="toggle">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="setting-item">
+    <label>About</label>
+    <p><strong>Expense Tracker</strong>
+    <br>
+     <br>Version 1.0.0<br>
+    Track your income and expenses effortlessly.<br>
+    Developed by Afifa, Aindrilla & Team<br>
+    Contact: support@expensetracker.com<br>
+    &copy; 2025 Expense Tracker. All rights reserved.<br>
+    Last Updated: May 20, 2025</p>
+    </div>
+
+    <div class="setting-item">
+      <label>Help</label>
+      <p><a href="#">Visit our Help Center</a></p>
+    </div>
+  </div>
+</body>
+</html>
+

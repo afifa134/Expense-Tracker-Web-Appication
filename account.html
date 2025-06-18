@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .header h2 {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .account-balance {
+      background: linear-gradient(135deg, #d5bfff, #a87ff3);
+      color: #fff;
+      padding: 40px 20px;
+      border-radius: 20px;
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .account-balance h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .account-balance p {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .wallet-list {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .wallet-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .wallet-item:last-child {
+      border-bottom: none;
+    }
+
+    .wallet-item i {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+
+    .wallet-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .add-wallet-btn {
+      display: block;
+      margin: 30px auto 0;
+      background-color: #7f3dff;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>Account</h2>
+  </div>
+
+  <div class="account-balance">
+    <h3>Account Balance</h3>
+    <p>$9400</p>
+  </div>
+
+  <div class="wallet-list">
+    <div class="wallet-item">
+      <div class="wallet-left">
+        <i class="fas fa-wallet" style="color: #7f3dff;"></i>
+        <span>Wallet</span>
+      </div>
+      <span>$400</span>
+    </div>
+    <div class="wallet-item">
+      <div class="wallet-left">
+        <i class="fab fa-cc-visa" style="color: #3273dc;"></i>
+        <span>Chase</span>
+      </div>
+      <span>$1000</span>
+    </div>
+    <div class="wallet-item">
+      <div class="wallet-left">
+        <i class="fab fa-cc-mastercard" style="color: #e63946;"></i>
+        <span>Citi</span>
+      </div>
+      <span>$6000</span>
+    </div>
+    <div class="wallet-item">
+      <div class="wallet-left">
+        <i class="fab fa-cc-paypal" style="color: #0070ba;"></i>
+        <span>Paypal</span>
+      </div>
+      <span>$2000</span>
+    </div>
+  </div>
+    <a href="new.html">
+      <button class="add-wallet-btn">+ Add new wallet</button></a>
+      
+</body>
+</html>
+

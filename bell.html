@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications - Budget Buddy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #8b5cf6;
+      color: white;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+    }
+
+    .back-btn {
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: white;
+      text-decoration: none;
+    }
+
+    .clear-btn {
+      font-size: 0.9rem;
+      background-color: white;
+      color: #8b5cf6;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .notification {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .notification p {
+      margin: 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .notification .time {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    .no-notification {
+      text-align: center;
+      color: #aaa;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="home.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+  Notifications
+  <button class="clear-btn" onclick="clearNotifications()">Clear All</button>
+</header>
+
+<div class="container" id="notificationList">
+  <!-- Notifications will be injected here -->
+</div>
+
+<script>
+  const notificationList = document.getElementById('notificationList');
+
+  // Sample notifications (can be replaced with Firebase)
+  const notifications = [
+    {
+      message: "You've added a new income of ₹12,000",
+      time: "Just now"
+    },
+    {
+      message: "Monthly report is ready to view",
+      time: "1 hour ago"
+    },
+    {
+      message: "You spent ₹800 on Internet Bill",
+      time: "Yesterday"
+    }
+  ];
+
+  function renderNotifications() {
+    notificationList.innerHTML = "";
+
+    if (notifications.length === 0) {
+      notificationList.innerHTML = `<div class="no-notification">🎉 No new notifications</div>`;
+      return;
+    }
+
+    notifications.forEach(note => {
+      const div = document.createElement("div");
+      div.classList.add("notification");
+      div.innerHTML = `
+        <p>${note.message}</p>
+        <div class="time">${note.time}</div>
+      `;
+      notificationList.appendChild(div);
+    });
+  }
+
+  function clearNotifications() {
+    notifications.length = 0;
+    renderNotifications();
+  }
+
+  // Initial load
+  renderNotifications();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BudgetBuddy Onboarding</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slides {
+      height: 300%;
+      width: 100%;
+      transition: transform 0.7s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .slide {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .slide img {
+      width: 200px;
+      margin: 30px auto;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin: 20px 0 10px;
+      color: #000;
+    }
+
+    p {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .dot-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .dot {
+      height: 10px;
+      width: 10px;
+      background-color: #ccc;
+      border-radius: 50%;
+    }
+
+    .dot.active {
+      background-color: #a855f7;
+    }
+
+    .btn {
+      width: 80%;
+      padding: 14px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #a855f7;
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: #f3e8ff;
+      color: #a855f7;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="slides" id="slides">
+      <!-- Slide 1 -->
+      <div class="slide" style="background: #ffffff;">
+        <img src="Illustration.jpg" alt="Money Control" />
+        <h2>Gain total control of your money</h2>
+        <p>Become your own money manager and make every cent count</p>
+        <div class="dot-indicator">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <a href="SignUp.html">
+        <button class="btn btn-primary">Sign Up</button>
+        </a>
+        <a href="login.html">
+      <button class="btn btn-outline">Login</button>
+      </a>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide" style="background: #f3e8ff;">
+        <img src="Illustration2.jpg" alt="Budget Plan" />
+        <h2>Know where your money goes</h2>
+        <p>Track your transaction easily, with categories and financial report </p>
+        <div class="dot-indicator">
+          <div class="dot"></div>
+          <div class="dot active"></div>
+          <div class="dot"></div>
+        </div>
+        <a href="SignUp.html">
+        <button class="btn btn-primary">Sign Up</button>
+        </a>
+       <a href="login.html">
+      <button class="btn btn-outline">Login</button>
+      </a>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide" style="background: #ede9fe;">
+        <img src="Illustration3.jpg" alt="Financial Goals" />
+        <h2>Reach your goals</h2>
+        <p>Set saving goals and achieve them faster with ease</p>
+        <div class="dot-indicator">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot active"></div>
+        </div>
+       <a href="SignUp.html">
+      <button class="btn btn-primary">Sign Up</button>
+        </a>
+       <a href="login.html">
+      <button class="btn btn-outline">Login</button>
+      </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.getElementById("slides");
+    const indicators = document.querySelectorAll(".dot-indicator");
+
+    function goToNextSlide() {
+      currentSlide++;
+      if (currentSlide > 2) {
+        currentSlide = 2; // stay on the last slide
+        return;
+      }
+      slides.style.transform = `translateY(-${currentSlide * 100}vh)`;
+
+      indicators.forEach((indicatorSet, idx) => {
+        const dots = indicatorSet.querySelectorAll(".dot");
+        dots.forEach((dot, dotIdx) => {
+          dot.classList.toggle("active", dotIdx === currentSlide);
+        });
+      });
+    }
+
+    setInterval(goToNextSlide, 3000); // auto-slide every 3 seconds
+  </script>
+</body>
+</html>

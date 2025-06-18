@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up Success</title>
+  <meta http-equiv="refresh" content="2;url=home.html"> <!-- Auto redirect after 2 seconds -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #22c55e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .checkmark::before {
+      content: '✔';
+      font-size: 40px;
+      color: white;
+    }
+
+    p {
+      font-size: 1.4rem;
+      color: black;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="checkmark"></div>
+  <p>You are set successfully!</p>
+</body>
+</html>

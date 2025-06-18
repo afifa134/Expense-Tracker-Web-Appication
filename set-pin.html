@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Setup PIN</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #a855f7;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      justify-content: space-between;
+      padding: 50px 0;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-top: 30px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: #fff;
+      opacity: 0.4;
+    }
+
+    .dot.filled {
+      opacity: 1;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 240px;
+      margin-bottom: 40px;
+    }
+
+    .key {
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    .key:active {
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="pin-label">Let’s setup your PIN</h2>
+
+  <div class="dots" id="dots">
+    <div class="dot" id="dot0"></div>
+    <div class="dot" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
+  </div>
+
+  <div class="keypad">
+    <button class="key" onclick="addDigit('1')">1</button>
+    <button class="key" onclick="addDigit('2')">2</button>
+    <button class="key" onclick="addDigit('3')">3</button>
+    <button class="key" onclick="addDigit('4')">4</button>
+    <button class="key" onclick="addDigit('5')">5</button>
+    <button class="key" onclick="addDigit('6')">6</button>
+    <button class="key" onclick="addDigit('7')">7</button>
+    <button class="key" onclick="addDigit('8')">8</button>
+    <button class="key" onclick="addDigit('9')">9</button>
+    <div></div>
+    <button class="key" onclick="addDigit('0')">0</button>
+    <button class="key" onclick="submitPIN()">→</button>
+  </div>
+
+  <script>
+    let pin = "";
+    let confirmStage = false;
+    let firstPin = "";
+
+    function addDigit(digit) {
+      if (pin.length < 4) {
+        pin += digit;
+        updateDots();
+      }
+    }
+
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById("dot" + i).classList.toggle("filled", i < pin.length);
+      }
+    }
+
+    function submitPIN() {
+      if (pin.length !== 4) return;
+
+      if (!confirmStage) {
+        firstPin = pin;
+        pin = "";
+        confirmStage = true;
+        document.getElementById("pin-label").innerText = "Ok. Re-type your PIN.";
+        updateDots();
+      } else {
+        if (pin === firstPin) {
+          alert("PIN set successfully!");
+          localStorage.setItem("userPIN", pin); // Store temporarily in local storage
+          window.location.href = "set-up-acc.html";
+        } else {
+          alert("PINs do not match. Try again.");
+        }
+        // Reset
+        pin = "";
+        firstPin = "";
+        confirmStage = false;
+        document.getElementById("pin-label").innerText = "Let’s setup your PIN";
+        updateDots();
+      }
+    }
+  </script>
+</body>
+</html>

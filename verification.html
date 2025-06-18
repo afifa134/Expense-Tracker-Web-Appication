@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Code</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .otp-box {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .otp-box input {
+      width: 50px;
+      height: 55px;
+      font-size: 1.5rem;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .otp-box input:focus {
+      border-color: #9333ea;
+    }
+
+    .timer {
+      font-weight: 600;
+      color: #9333ea;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .info {
+      color: #444;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+    }
+
+    .info span {
+      color: #000;
+      display: block;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .resend {
+      color: #9333ea;
+      font-size: 0.9rem;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background: #a855f7;
+      color: white;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 9999px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #9333ea;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Enter your Verification Code</h2>
+
+  <div class="otp-box">
+    <input type="text" maxlength="1" />
+    <input type="text" maxlength="1" />
+    <input type="text" maxlength="1" />
+    <input type="text" maxlength="1" />
+    <input type="text" maxlength="1" />
+    <input type="text" maxlength="1" />
+  </div>
+
+  <div class="timer" id="timer">05:00</div>
+
+  <div class="info">
+    We sent a verification code to your email
+    <span>************@gmail.com</span>
+  </div>
+
+  <div class="resend" onclick="resetTimer()">Didn't receive the code? Send again</div>
+
+  <button class="btn" onclick="verifyCode()">Verify</button>
+</div>
+
+<script>
+  // Auto-focus OTP input
+  const inputs = document.querySelectorAll('.otp-box input');
+  inputs.forEach((input, i) => {
+    input.addEventListener('input', () => {
+      if (input.value && i < inputs.length - 1) {
+        inputs[i + 1].focus();
+      }
+    });
+  });
+
+  // Timer countdown
+  let time = 300;
+  const timerDisplay = document.getElementById('timer');
+
+  function updateTimer() {
+    const minutes = String(Math.floor(time / 60)).padStart(2, '0');
+    const seconds = String(time % 60).padStart(2, '0');
+    timerDisplay.textContent = `${minutes}:${seconds}`;
+    if (time > 0) {
+      time--;
+      setTimeout(updateTimer, 1000);
+    }
+  }
+
+  updateTimer();
+
+  function resetTimer() {
+    time = 300;
+    updateTimer();
+    alert("New code sent to your email.");
+  }
+
+  function verifyCode() {
+    const otp = Array.from(inputs).map(input => input.value).join('');
+    if (otp.length === 6) {
+      alert("Verification successful! Redirecting...");
+      window.location.href = "login.html";
+    } else {
+      alert("Please enter all 6 digits.");
+    }
+  }
+</script>
+
+</body>
+</html>

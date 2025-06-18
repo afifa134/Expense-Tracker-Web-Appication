@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Export Data</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 500px;
+      background: #fff;
+      padding: 24px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    select,
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .date-range {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #7f3dff;
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #7f3dff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Export Data</h2>
+
+  <div class="form-group">
+    <label for="export-data-type">What do you want to export?</label>
+    <select id="export-data-type">
+      <option value="all">All Data</option>
+      <option value="income">Income</option>
+      <option value="expenses">Expenses</option>
+      <option value="transfers">Transfers</option>
+      <option value="attachments">Attachments</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Date Range:</label>
+    <div class="date-range">
+      <input type="date" id="start-date">
+      <input type="date" id="end-date">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="export-format">Choose export format:</label>
+    <select id="export-format">
+      <option value="pdf">PDF</option>
+      <option value="csv">CSV</option>
+      <option value="xlsx">Excel (.xlsx)</option>
+      <option value="json">JSON</option>
+    </select>
+  </div>
+
+  <button onclick="exportData()"> Export  <i class="fas fa-upload"></i></button>
+</div>
+
+<script>
+  function exportData() {
+    const dataType = document.getElementById("export-data-type").value;
+    const startDate = document.getElementById("start-date").value;
+    const endDate = document.getElementById("end-date").value;
+    const format = document.getElementById("export-format").value;
+
+    alert(`Exporting ${dataType} from ${startDate} to ${endDate} in ${format.toUpperCase()} format.`);
+    // You can implement actual download logic or file generation here
+  }
+</script>
+
+</body>
+</html>

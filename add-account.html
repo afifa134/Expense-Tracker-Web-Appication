@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Account</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #9333ea;
+      color: white;
+      padding: 30px 20px;
+    }
+
+    .back {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    .balance {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .balance input {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      width: 100%;
+      outline: none;
+      padding-left: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .form {
+      background-color: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+      color: black;
+    }
+
+    .continue {
+      width: 100%;
+      padding: 15px;
+      background-color: #9333ea;
+      color: white;
+      font-size: 1rem;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .continue:hover {
+      background-color: #7e22ce;
+    }
+  </style>
+</head>
+<body>
+  <div class="back" onclick="history.back()">←</div>
+  <h2>Add new account</h2>
+
+  <!-- Editable amount section -->
+  <div class="balance">
+    <span>₹</span><input id="amount" type="number" placeholder="0.0" />
+  </div>
+
+  <div class="form">
+    <input type="text" id="accountName" placeholder="Name" />
+    <select id="accountType">
+      <option selected disabled>Account Type</option>
+      <option>Bank</option>
+      <option>Wallet</option>
+      <option>Credit Card</option>
+    </select>
+    <button class="continue" onclick="handleContinue()">Continue</button>
+  </div>
+
+  <script>
+    function handleContinue() {
+      const name = document.getElementById("accountName").value.trim();
+      const type = document.getElementById("accountType").value;
+      const amount = parseFloat(document.getElementById("amount").value) || 0;
+
+      if (!name || type === "Account Type") {
+        alert("Please enter all details.");
+        return;
+      }
+
+      console.log("Account:", name);
+      console.log("Type:", type);
+      console.log("Initial Balance: $" + amount.toFixed(2));
+
+      // You can now store this in Firebase or local storage
+      // Example:
+      // saveAccountToFirebase({ name, type, amount });
+
+      alert("Account created!");
+      window.location.href = "add-wallet.html";
+    }
+  </script>
+</body>
+</html>
